@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  gdrive-downloader:
+    # Build the image from the Dockerfile in the current directory
+    build: .
+    container_name: gdrive-downloader-service
+    # Always restart the container if it stops (for the retry loop)
+    restart: always
+    # Load environment variables from the .env file in the current directory
+    env_file:
+      - .env
+    volumes:
+      # Mount the host 'data/downloads' directory to '/app/downloads' inside the container
+      # Persists downloaded files on the host machine.
+      - /home/serveradmin/OnePiece:/app/downloads
+      # Mount the host 'data/state' directory to '/app/state' inside the container
+      # Persists the 'found_files.json' state file on the host.
+      - ./data/state:/app/state
+      # Mount the host 'secrets' directory (containing credentials) to '/app/secrets'
+      # Mount as read-only for security.
+      - ./secrets:/app/secrets:ro
+
+    # Optional: Healthcheck (Advanced - Checks if the process is running)
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pgrep -f 'python -m gdrive_downloader.main' || exit 1"]
+    #   interval: 1m
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 30s
