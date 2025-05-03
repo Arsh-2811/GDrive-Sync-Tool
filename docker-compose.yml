@@ -13,10 +13,10 @@ services:
     volumes:
       # Mount the host 'data/downloads' directory to '/app/downloads' inside the container
       # Persists downloaded files on the host machine.
-      - /home/serveradmin/OnePiece:/app/downloads
+      - /home/serveradmin/OnePiece:/app/downloads:rw
       # Mount the host 'data/state' directory to '/app/state' inside the container
       # Persists the 'found_files.json' state file on the host.
-      - ./data/state:/app/state
+      - ./data/state:/app/state:rw
       # Mount the host 'secrets' directory (containing credentials) to '/app/secrets'
       # Mount as read-only for security.
       - ./secrets:/app/secrets:ro
